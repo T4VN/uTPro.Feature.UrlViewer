@@ -4,6 +4,14 @@ Fetch and inspect any URL as **Googlebot**, **Bingbot** or a real **browser**, d
 
 Supports **Umbraco 16, 17 and 18**.
 
+[![NuGet](https://img.shields.io/nuget/v/uTPro.Feature.UrlViewer.svg)](https://www.nuget.org/packages/uTPro.Feature.UrlViewer)
+[![NuGet Downloads](https://img.shields.io/nuget/dt/uTPro.Feature.UrlViewer.svg)](https://www.nuget.org/packages/uTPro.Feature.UrlViewer)
+[![Umbraco Marketplace](https://img.shields.io/badge/Umbraco-Marketplace-blue)](https://marketplace.umbraco.com/package/utpro.feature.urlviewer)
+[![Umbraco 16+](https://img.shields.io/badge/Umbraco-16%2B-3544B1)](https://umbraco.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
+![uTPro URL Viewer - fetch and inspect any URL as Googlebot from the Umbraco backoffice](https://raw.githubusercontent.com/T4VN/uTPro.Feature.UrlViewer/refs/heads/main/Images/Screenshots/1.0.0/ScanUrl.png)
+
 ## Features
 
 - **Fetch as any user agent** - Googlebot (smartphone/desktop), Bingbot, Chrome, Firefox, Edge.
@@ -43,6 +51,20 @@ Open the backoffice, go to the **Settings** section, and find **URL Viewer** und
 
 All calls go through the authenticated Umbraco Management API under
 `/umbraco/management/api/v1/utpro/url-viewer/...` (never a public endpoint).
+
+## Screenshots
+
+### URL Viewer — fetch a URL as any bot/browser and inspect the redirect chain, headers, HTML source and analysis
+![URL Viewer tool](https://raw.githubusercontent.com/T4VN/uTPro.Feature.UrlViewer/refs/heads/main/Images/Screenshots/1.0.0/ScanUrl.png)
+
+### Site URL Scan — scan every Content & Media URL and browse the latest report
+![Site URL Scan view](https://raw.githubusercontent.com/T4VN/uTPro.Feature.UrlViewer/refs/heads/main/Images/Screenshots/1.0.0/SiteScan.png)
+
+### Error URLs — the standing list of failing URLs, with one-click re-scan (single or all)
+![Error URLs view](https://raw.githubusercontent.com/T4VN/uTPro.Feature.UrlViewer/refs/heads/main/Images/Screenshots/1.0.0/Error.png)
+
+### Auto-discovered by uTPro Job Monitor — the recurring Site URL Scan background job
+![Site URL Scan job listed in uTPro Job Monitor](https://raw.githubusercontent.com/T4VN/uTPro.Feature.UrlViewer/refs/heads/main/Images/Screenshots/1.0.0/uTPro.Feature.UrlViewer.SiteScan.SiteUrlScanJob.png)
 
 ## Configuration
 

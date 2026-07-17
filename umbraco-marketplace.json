@@ -1,4 +1,5 @@
 {
+  "$schema": "https://marketplace.umbraco.com/umbraco-marketplace-schema.json",
   "Category": "Developer Tools",
   "Title": "uTPro URL Viewer",
   "Description": "Fetch and inspect any URL as Googlebot, Bingbot or a real browser, directly from your Umbraco site (Umbraco 16, 17, 18). Follows the full redirect chain and shows the response headers for every hop, renders the raw HTML source with line numbers, and analyses the page for spam/hack keywords, hidden CSS (a common cloaking trick), meta tags and common JavaScript issues (eval, document.write, obfuscation, mixed content and more). Includes automatic cloaking detection that compares what a search-engine bot sees versus what Chrome sees, plus a one-click VirusTotal link for the domain. Ideal for SEO debugging, diagnosing hacked or cloaked pages, and inspecting redirects. The fetch runs server-side and blocks private/local addresses for safety.",
@@ -33,5 +34,23 @@
   "LookingForContributors": true,
   "PackageType": "Package",
   "DocumentationUrl": "https://github.com/T4VN/uTPro.Feature.UrlViewer",
-  "IssueTrackerUrl": "https://github.com/T4VN/uTPro.Feature.UrlViewer/issues"
+  "IssueTrackerUrl": "https://github.com/T4VN/uTPro.Feature.UrlViewer/issues",
+  "Screenshots": [
+    {
+      "ImageUrl": "https://raw.githubusercontent.com/T4VN/uTPro.Feature.UrlViewer/refs/heads/main/Images/Screenshots/1.0.0/ScanUrl.png",
+      "Caption": "URL Viewer - fetch a URL as any bot/browser and inspect the redirect chain, headers, HTML source and analysis"
+    },
+    {
+      "ImageUrl": "https://raw.githubusercontent.com/T4VN/uTPro.Feature.UrlViewer/refs/heads/main/Images/Screenshots/1.0.0/SiteScan.png",
+      "Caption": "Site URL Scan - scan every Content & Media URL and browse the latest report"
+    },
+    {
+      "ImageUrl": "https://raw.githubusercontent.com/T4VN/uTPro.Feature.UrlViewer/refs/heads/main/Images/Screenshots/1.0.0/Error.png",
+      "Caption": "Error URLs - the standing list of failing URLs, with one-click re-scan (single or all)"
+    },
+    {
+      "ImageUrl": "https://raw.githubusercontent.com/T4VN/uTPro.Feature.UrlViewer/refs/heads/main/Images/Screenshots/1.0.0/uTPro.Feature.UrlViewer.SiteScan.SiteUrlScanJob.png",
+      "Caption": "Auto-discovered by uTPro Job Monitor - the recurring Site URL Scan background job"
+    }
+  ]
 }
