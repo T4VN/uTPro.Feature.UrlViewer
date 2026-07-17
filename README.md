@@ -16,7 +16,14 @@ Supports **Umbraco 16, 17 and 18**.
   - JavaScript issues - `eval`, `document.write`, `innerHTML`, base64 obfuscation, mixed content, mismatched `<script>` tags and more.
 - **Cloaking detection** - compares what a bot sees versus what Chrome sees (title, status code and content-size differences).
 - **VirusTotal link** for the fetched domain.
-- **Safe by default** - the fetch runs server-side and blocks private/local addresses (localhost, RFC-1918 ranges, `.local`, ...).
+- **Safe by default** - the fetch runs server-side (SSRF guard) and blocks private/local addresses (localhost, RFC-1918 ranges, link-local `169.254.x.x`, IPv6 loopback/ULA, `.local`, ...). The guard resolves DNS and re-checks every redirect hop.
+
+### Site URL Scan
+
+- Recurring background job that scans every **Content** and **Media** URL on the site.
+- Stores a **summary report per run** in the database (status code, redirect count, spam/cloaking flags, JS error count, timing).
+- Maintains a standing **Error URLs** list; re-scan a single URL or all failing URLs on demand.
+- Auto-discovered and controllable via **uTPro Job Monitor** (optional companion package).
 
 ## Installation
 
@@ -26,21 +33,55 @@ dotnet add package uTPro.Feature.UrlViewer
 
 ## Usage
 
-Once installed, browse to:
+The tool lives entirely in the Umbraco **backoffice** and requires **Settings** section access.
 
+Open the backoffice, go to the **Settings** section, and find **URL Viewer** under the **Advanced** menu. It has three views:
+
+- **URL Viewer** - enter a URL, pick the scheme, user agent and referrer, then run the fetch to see the redirect chain, headers, HTML source and analysis.
+- **Site URL Scan** - trigger/inspect scans of all Content & Media URLs and browse the latest report.
+- **Error URLs** - the standing list of failing URLs, with one-click re-scan (single or all).
+
+All calls go through the authenticated Umbraco Management API under
+`/umbraco/management/api/v1/utpro/url-viewer/...` (never a public endpoint).
+
+## Configuration
+
+The manual URL Viewer needs no configuration. The recurring **Site URL Scan** is configured under
+`uTPro:Feature:UrlViewer:SiteScan` in `appsettings.json` (all keys optional — defaults shown):
+
+```json
+{
+  "uTPro": {
+    "Feature": {
+      "UrlViewer": {
+        "SiteScan": {
+          "Enabled": true,
+          "Period": "24:00:00",
+          "Delay": "00:05:00",
+          "MaxConcurrency": 4,
+          "ThrottleDelayMs": 150,
+          "SkipCloakingCheck": true,
+          "AllowInternalHosts": false,
+          "RedirectWarningThreshold": 3,
+          "MaxRunHistory": 20
+        }
+      }
+    }
+  }
+}
 ```
-/url-viewer/index.html
-```
 
-Enter a URL, pick the scheme, user agent and referrer, then click **View**.
-
-You can also pre-fill and auto-run via query string, for example:
-
-```
-/url-viewer/index.html?url=example.com&scheme=https&ua=googlebot-smartphone&ref=google
-```
-
-The page calls the server endpoint `POST /api/UrlViewerApi/fetch`.
+| Key | Default | Description |
+|-----|---------|-------------|
+| `Enabled` | `true` | Master switch for the recurring scan job. |
+| `Period` | `24:00:00` | How often the scan runs (`d.hh:mm:ss`). |
+| `Delay` | `00:05:00` | Delay before the first run after startup. |
+| `MaxConcurrency` | `4` | Max concurrent HTTP fetches (clamped 1–20). |
+| `ThrottleDelayMs` | `150` | Delay after each fetch, in ms. |
+| `SkipCloakingCheck` | `true` | Skip the bot-vs-Chrome cloaking check during bulk scans (faster). |
+| `AllowInternalHosts` | `false` | **Security:** relax the SSRF guard to allow scanning private/local addresses. Only enable when the site runs on an internal host. |
+| `RedirectWarningThreshold` | `3` | Redirect-hop count above which a result is flagged as a long chain. |
+| `MaxRunHistory` | `20` | Scan runs retained in the DB before old runs are pruned. |
 
 ## Repository layout
 
