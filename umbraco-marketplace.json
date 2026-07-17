@@ -1,0 +1,37 @@
+{
+  "Category": "Developer Tools",
+  "Title": "uTPro URL Viewer",
+  "Description": "Fetch and inspect any URL as Googlebot, Bingbot or a real browser, directly from your Umbraco site (Umbraco 16, 17, 18). Follows the full redirect chain and shows the response headers for every hop, renders the raw HTML source with line numbers, and analyses the page for spam/hack keywords, hidden CSS (a common cloaking trick), meta tags and common JavaScript issues (eval, document.write, obfuscation, mixed content and more). Includes automatic cloaking detection that compares what a search-engine bot sees versus what Chrome sees, plus a one-click VirusTotal link for the domain. Ideal for SEO debugging, diagnosing hacked or cloaked pages, and inspecting redirects. The fetch runs server-side and blocks private/local addresses for safety.",
+  "AuthorDetails": {
+    "Name": "T4VN",
+    "Url": "https://t4vn.com",
+    "ImageUrl": "https://github.com/t4vn.png",
+    "SyncContributorsFromRepository": true
+  },
+  "LicenseTypes": [
+    "Free"
+  ],
+  "Tags": [
+    "url",
+    "url viewer",
+    "fetch as google",
+    "fetch as googlebot",
+    "googlebot",
+    "bingbot",
+    "seo",
+    "redirect",
+    "redirect chain",
+    "cloaking",
+    "cloaking detection",
+    "spam",
+    "hacked site",
+    "http headers",
+    "user agent",
+    "html source",
+    "developer tools"
+  ],
+  "LookingForContributors": true,
+  "PackageType": "Package",
+  "DocumentationUrl": "https://github.com/T4VN/uTPro.Feature.UrlViewer",
+  "IssueTrackerUrl": "https://github.com/T4VN/uTPro.Feature.UrlViewer/issues"
+}

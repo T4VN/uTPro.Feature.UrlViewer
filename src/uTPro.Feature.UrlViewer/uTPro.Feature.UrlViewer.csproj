@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <!-- net9.0 -> Umbraco 16, net10.0 -> Umbraco 17 & 18 -->
+    <TargetFrameworks>net9.0;net10.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <!-- NuGet Package Metadata -->
+    <PackageId>uTPro.Feature.UrlViewer</PackageId>
+    <Title>uTPro URL Viewer for Umbraco (16, 17, 18)</Title>
+    <Version>1.0.0</Version>
+    <Authors>T4VN</Authors>
+    <Company>T4VN</Company>
+    <Description>Fetch and inspect any URL as Googlebot, Bingbot or a real browser, directly from your Umbraco site. Follows the full redirect chain, shows response headers per hop, renders the HTML source, and analyses the page for spam/hack keywords, hidden CSS, meta tags and common JavaScript issues. Includes cloaking detection (compares what a bot sees versus what Chrome sees) and a VirusTotal link. Great for SEO debugging, diagnosing hacked/cloaked pages and inspecting redirects. Server-side fetch blocks private/local addresses for safety.</Description>
+    <PackageTags>umbraco;umbraco-marketplace;umbraco-package;url;url-viewer;fetch-as-google;googlebot;bingbot;seo;redirect;redirect-chain;cloaking;spam;hacked-site;http-headers;user-agent;developer-tools</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/T4VN/uTPro.Feature.UrlViewer</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/T4VN/uTPro.Feature.UrlViewer</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageReleaseNotes>v1.0.0: URL Viewer + Site URL Scan. Backoffice-secured tool (Settings section, under /umbraco) to fetch a URL as different user agents, follow the redirect chain, view headers/HTML source, and run spam/hidden-CSS/meta/JavaScript analysis with cloaking detection. Adds a recurring Site URL Scan job (auto-discovered by uTPro Job Monitor) that scans all Content/Media URLs, stores summary reports in the database, maintains a standing error-URL list, and supports on-demand re-scan of individual or all failing URLs.</PackageReleaseNotes>
+
+    <!-- Serve wwwroot assets at their wwwroot-relative path (e.g. /url-viewer/index.html). -->
+    <StaticWebAssetBasePath>/</StaticWebAssetBasePath>
+    <!-- Packages are produced only via the repo's pack.ps1 (clean build + cache eviction),
+         never automatically on every build - this prevents shipping a stale/Debug assembly. -->
+    <PackageOutputPath>..\..\Build</PackageOutputPath>
+  </PropertyGroup>
+
+  <!-- Umbraco 16 (runs on .NET 9) -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+    <PackageReference Include="Umbraco.Cms.Api.Management" Version="[16.0.0, 17.0.0)" />
+  </ItemGroup>
+
+  <!-- Umbraco 17 and 18 (run on .NET 10) -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
+    <PackageReference Include="Umbraco.Cms.Api.Management" Version="[17.0.0, 19.0.0)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="/" />
+    <None Include="..\..\icon.png" Pack="true" PackagePath="/" />
+    <None Include="..\..\umbraco-marketplace.json" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
+</Project>

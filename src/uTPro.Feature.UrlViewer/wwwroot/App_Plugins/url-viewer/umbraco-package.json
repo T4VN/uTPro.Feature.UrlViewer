@@ -1,0 +1,80 @@
+{
+  "name": "uTPro.UrlViewer",
+  "version": "1.0.0",
+  "extensions": [
+    {
+      "type": "menuItem",
+      "alias": "uTPro.UrlViewer.MenuItem",
+      "name": "URL Viewer Menu Item",
+      "weight": 230,
+      "meta": {
+        "label": "#utproUrlViewer_title",
+        "icon": "icon-search",
+        "entityType": "utpro-url-viewer-root",
+        "menus": ["Umb.Menu.AdvancedSettings"]
+      }
+    },
+    {
+      "type": "workspace",
+      "kind": "default",
+      "alias": "uTPro.UrlViewer.Workspace",
+      "name": "URL Viewer Root Workspace",
+      "meta": {
+        "entityType": "utpro-url-viewer-root",
+        "headline": "#utproUrlViewer_title"
+      }
+    },
+    {
+      "type": "workspaceView",
+      "alias": "uTPro.UrlViewer.View.Tool",
+      "name": "URL Viewer Tool View",
+      "element": "/App_Plugins/url-viewer/dashboard.js",
+      "weight": 80,
+      "meta": {
+        "label": "#utproUrlViewer_tool",
+        "pathname": "tool",
+        "icon": "icon-search"
+      },
+      "conditions": [
+        { "alias": "Umb.Condition.WorkspaceAlias", "match": "uTPro.UrlViewer.Workspace" }
+      ]
+    },
+    {
+      "type": "workspaceView",
+      "alias": "uTPro.UrlViewer.View.Scan",
+      "name": "Site URL Scan View",
+      "element": "/App_Plugins/url-viewer/site-scan.js",
+      "weight": 100,
+      "meta": {
+        "label": "#utproUrlViewer_scan",
+        "pathname": "scan",
+        "icon": "icon-sitemap"
+      },
+      "conditions": [
+        { "alias": "Umb.Condition.WorkspaceAlias", "match": "uTPro.UrlViewer.Workspace" }
+      ]
+    },
+    {
+      "type": "workspaceView",
+      "alias": "uTPro.UrlViewer.View.Errors",
+      "name": "Error URLs View",
+      "element": "/App_Plugins/url-viewer/errors.js",
+      "weight": 90,
+      "meta": {
+        "label": "#utproUrlViewer_errors",
+        "pathname": "errors",
+        "icon": "icon-alert"
+      },
+      "conditions": [
+        { "alias": "Umb.Condition.WorkspaceAlias", "match": "uTPro.UrlViewer.Workspace" }
+      ]
+    },
+    {
+      "type": "localization",
+      "alias": "uTPro.UrlViewer.Localize.EnUS",
+      "name": "URL Viewer English",
+      "js": "/App_Plugins/url-viewer/lang/en-us.js",
+      "meta": { "culture": "en-US" }
+    }
+  ]
+}
