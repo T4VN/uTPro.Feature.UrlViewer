@@ -72,6 +72,30 @@ public sealed class ScanReportStore(
         }
     }
 
+    public void AddResults(IReadOnlyList<ScanResultRow> rows)
+    {
+        if (rows.Count == 0)
+        {
+            return;
+        }
+
+        try
+        {
+            // Single short scope wraps all inserts in one transaction: N per-row commits become
+            // one commit. Pure inserts (no reads), so this does not lengthen lock scope the way a
+            // read-modify-write batch would, keeping the store's short-transaction design intact.
+            using var scope = scopeProvider.CreateScope(autoComplete: true);
+            foreach (var row in rows)
+            {
+                scope.Database.Insert(ToDto(row));
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Failed to persist {Count} scan results.", rows.Count);
+        }
+    }
+
     public IReadOnlyList<ScanRunSummary> GetRuns(int limit)
     {
         try
@@ -365,6 +389,7 @@ public sealed class ScanReportStore(
         return Convert.ToHexString(bytes);
     }
 
+    [return: System.Diagnostics.CodeAnalysis.NotNullIfNotNull(nameof(value))]
     private static string? Truncate(string? value, int max)
         => value is null ? null : value.Length <= max ? value : value[..max];
 }

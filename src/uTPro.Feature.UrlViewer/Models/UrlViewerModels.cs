@@ -29,12 +29,6 @@ public class UrlViewerRequest
     /// Used by bulk scans to reduce the number of HTTP requests per URL.
     /// </summary>
     public bool SkipCloakingCheck { get; set; }
-
-    /// <summary>
-    /// When <c>true</c> the SSRF guard is relaxed so private/local addresses can be fetched.
-    /// Only enable for trusted internal scans of the site's own URLs.
-    /// </summary>
-    public bool AllowInternalHosts { get; set; }
 }
 
 /// <summary>

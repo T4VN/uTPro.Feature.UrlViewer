@@ -18,17 +18,9 @@ public class UrlViewerComposer : IComposer
 {
     public void Compose(IUmbracoBuilder builder)
     {
-        // Auto-redirect client for reading final body content.
-        builder.Services.AddHttpClient("UrlViewer")
-            .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
-            {
-                AllowAutoRedirect = true,
-                MaxAutomaticRedirections = 15,
-                AutomaticDecompression = DecompressionMethods.All,
-                UseCookies = false
-            });
-
-        // No-redirect client for capturing individual hops and cloaking comparison.
+        // Single no-redirect client for all fetches: every hop (initial URL, each redirect and the
+        // body read) is followed manually so the DNS-based SSRF guard runs on every host. An
+        // auto-redirect client would bypass that guard, so it is intentionally not registered.
         builder.Services.AddHttpClient("UrlViewerNoRedirect")
             .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
             {

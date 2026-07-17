@@ -186,10 +186,13 @@ public sealed class SiteScanService(
 
         // Phase 2 — persist sequentially (single-threaded) so DB writes never run on concurrent
         // threads sharing the same scope. These calls are cheap relative to the HTTP fetches.
+        // All result rows are inserted in one batched transaction (one commit instead of one per
+        // row); the error-list upsert/remove stay per-row because each is a read-modify-write that
+        // must keep a short scope (preserves the store's no-long-transaction design).
+        store.AddResults(rows);
+
         foreach (var row in rows)
         {
-            store.AddResult(row);
-
             if (updateErrorList)
             {
                 if (row.Success)
@@ -328,8 +331,7 @@ public sealed class SiteScanService(
             Scheme = scheme,
             UserAgent = "googlebot-smartphone",
             Referrer = "google",
-            SkipCloakingCheck = _options.SkipCloakingCheck,
-            AllowInternalHosts = _options.AllowInternalHosts
+            SkipCloakingCheck = _options.SkipCloakingCheck
         };
     }
 }

@@ -129,9 +129,9 @@ export class UtproErrorUrlsView extends UmbLitElement {
         }
     }
 
-    // Fetches the full viewer report for a URL. These are the site's own crawled URLs, so we
-    // allow internal/private hosts here (the endpoint is Settings-gated) — otherwise a local
-    // site's own addresses would be blocked by the SSRF guard and no report could be shown.
+    // Fetches the full viewer report for a URL. Whether the site's own private/local addresses
+    // may be fetched is decided server-side via configuration (SiteScan:AllowInternalHosts); the
+    // client can no longer request it, which closes the SSRF bypass.
     async #loadReport(url) {
         this.reportBusy = new Set(this.reportBusy).add(url);
         try {
@@ -140,8 +140,7 @@ export class UtproErrorUrlsView extends UmbLitElement {
                 url: rest,
                 scheme,
                 userAgent: 'googlebot-smartphone',
-                referrer: 'google',
-                allowInternalHosts: true
+                referrer: 'google'
             });
             this.reports = { ...this.reports, [url]: res.body ?? { success: false, errorMessage: 'No response.' } };
         } catch (e) {

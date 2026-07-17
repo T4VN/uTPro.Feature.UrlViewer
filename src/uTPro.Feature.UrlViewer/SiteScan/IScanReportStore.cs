@@ -27,6 +27,13 @@ public interface IScanReportStore
     /// <summary>Persists a single result row (one short scope).</summary>
     void AddResult(ScanResultRow row);
 
+    /// <summary>
+    /// Persists a batch of result rows inside a single short scope/transaction. Equivalent to
+    /// calling <see cref="AddResult"/> for each row but with one transaction commit instead of one
+    /// per row, reducing database round-trips at the end of a scan.
+    /// </summary>
+    void AddResults(IReadOnlyList<ScanResultRow> rows);
+
     /// <summary>Returns the most recent runs, newest first.</summary>
     IReadOnlyList<ScanRunSummary> GetRuns(int limit);
 
