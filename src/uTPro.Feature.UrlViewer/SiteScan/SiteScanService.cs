@@ -144,34 +144,23 @@ public sealed class SiteScanService(
 
         using var concurrency = new SemaphoreSlim(_options.EffectiveConcurrency);
 
-        var tasks = targets.Select(async target =>
+        // Phase 1 — fetch every target with bounded concurrency. Only HTTP work runs in parallel;
+        // NO database access happens here on purpose. Persisting from these parallel tasks would
+        // have multiple threads share the run's ambient Umbraco scope (a single DB
+        // connection/transaction), which NPoco/Npgsql does not support — it corrupts the
+        // transaction ("concurrent threads accessing the same Scope" / "Transaction is already
+        // completed" / disposed NpgsqlTransaction / buffer-overflow). DB writes happen in phase 2.
+        var fetchTasks = targets.Select(async target =>
         {
             await concurrency.WaitAsync(cancellationToken);
             try
             {
                 var row = await ScanTargetAsync(runId, target, cancellationToken);
-                store.AddResult(row);
-
-                if (updateErrorList)
-                {
-                    if (row.Success)
-                    {
-                        store.RemoveError(row.Url);
-                    }
-                    else
-                    {
-                        store.UpsertError(row);
-                    }
-                }
-
-                if (row.Success) Interlocked.Increment(ref success);
-                else Interlocked.Increment(ref failure);
-                if (row.IsIssue) Interlocked.Increment(ref issues);
-
                 if (_options.EffectiveThrottleMs > 0)
                 {
                     await Task.Delay(_options.EffectiveThrottleMs, cancellationToken);
                 }
+                return row;
             }
             finally
             {
@@ -179,9 +168,10 @@ public sealed class SiteScanService(
             }
         });
 
+        ScanResultRow[] rows = [];
         try
         {
-            await Task.WhenAll(tasks);
+            rows = await Task.WhenAll(fetchTasks);
         }
         catch (OperationCanceledException)
         {
@@ -192,6 +182,29 @@ public sealed class SiteScanService(
         {
             state = ScanRunState.Failed;
             logger.LogError(ex, "Site URL scan {RunId} failed.", runId);
+        }
+
+        // Phase 2 — persist sequentially (single-threaded) so DB writes never run on concurrent
+        // threads sharing the same scope. These calls are cheap relative to the HTTP fetches.
+        foreach (var row in rows)
+        {
+            store.AddResult(row);
+
+            if (updateErrorList)
+            {
+                if (row.Success)
+                {
+                    store.RemoveError(row.Url);
+                }
+                else
+                {
+                    store.UpsertError(row);
+                }
+            }
+
+            if (row.Success) success++;
+            else failure++;
+            if (row.IsIssue) issues++;
         }
 
         store.CompleteRun(new ScanRunSummary
