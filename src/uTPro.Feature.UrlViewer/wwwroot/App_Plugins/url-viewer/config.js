@@ -16,5 +16,8 @@ export const SCAN_ENDPOINTS = {
     results: (runId, filter) => `runs/${encodeURIComponent(runId)}/results${filter ? `?filter=${encodeURIComponent(filter)}` : ''}`,
     errors: 'errors',
     rescanErrors: 'errors/rescan',
-    rescanUrl: 'errors/rescan-url'
+    rescanUrl: 'errors/rescan-url',
+    nodeScan: 'node-scan',
+    nodeHasUrl: (key, entityType) =>
+        `node-has-url?key=${encodeURIComponent(key)}&entityType=${encodeURIComponent(entityType || 'document')}`
 };

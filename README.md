@@ -33,6 +33,12 @@ Supports **Umbraco 16, 17 and 18**.
 - Maintains a standing **Error URLs** list; re-scan a single URL or all failing URLs on demand.
 - Auto-discovered and controllable via **uTPro Job Monitor** (optional companion package).
 
+### Per-node URL Scan tab
+
+- Adds a **URL Scan** tab in the **Content** and **Media** editors, right after the **Info** tab.
+- The tab appears only for users with **Settings** access, and only when the node has a public, routable URL (folders / unrouted nodes don't show it).
+- Opening a node **auto-scans its own URL(s)** in the background (no button click needed) and raises a **warning notification** if a problem is found — so editors notice issues without leaving the node. A manual **Re-scan** is available inside the tab.
+
 ## Installation
 
 ```bash
@@ -48,6 +54,8 @@ Open the backoffice, go to the **Settings** section, and find **URL Viewer** und
 - **URL Viewer** - enter a URL, pick the scheme, user agent and referrer, then run the fetch to see the redirect chain, headers, HTML source and analysis.
 - **Site URL Scan** - trigger/inspect scans of all Content & Media URLs and browse the latest report.
 - **Error URLs** - the standing list of failing URLs, with one-click re-scan (single or all).
+
+You'll also find a **URL Scan** tab directly inside each **Content** and **Media** editor (after the **Info** tab) that auto-scans the node's own URL(s) when you open it — see [Per-node URL Scan tab](#per-node-url-scan-tab).
 
 All calls go through the authenticated Umbraco Management API under
 `/umbraco/management/api/v1/utpro/url-viewer/...` (never a public endpoint).

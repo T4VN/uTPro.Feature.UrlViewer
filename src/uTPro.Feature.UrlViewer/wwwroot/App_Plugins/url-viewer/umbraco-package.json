@@ -1,6 +1,6 @@
 {
   "name": "uTPro URL Viewer",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "extensions": [
     {
       "type": "menuItem",
@@ -67,6 +67,66 @@
       },
       "conditions": [
         { "alias": "Umb.Condition.WorkspaceAlias", "match": "uTPro.UrlViewer.Workspace" }
+      ]
+    },
+    {
+      "type": "condition",
+      "alias": "uTPro.UrlViewer.Condition.HasPublicUrl",
+      "name": "uTPro URL Viewer Has Public URL Condition",
+      "api": "/App_Plugins/url-viewer/has-public-url-condition.js"
+    },
+    {
+      "type": "workspaceContext",
+      "alias": "uTPro.UrlViewer.NodeScanContext.Document",
+      "name": "URL Scan Context (Document)",
+      "api": "/App_Plugins/url-viewer/node-scan.context.js",
+      "conditions": [
+        { "alias": "Umb.Condition.WorkspaceAlias", "match": "Umb.Workspace.Document" },
+        { "alias": "Umb.Condition.SectionUserPermission", "match": "Umb.Section.Settings" }
+      ]
+    },
+    {
+      "type": "workspaceContext",
+      "alias": "uTPro.UrlViewer.NodeScanContext.Media",
+      "name": "URL Scan Context (Media)",
+      "api": "/App_Plugins/url-viewer/node-scan.context.js",
+      "conditions": [
+        { "alias": "Umb.Condition.WorkspaceAlias", "match": "Umb.Workspace.Media" },
+        { "alias": "Umb.Condition.SectionUserPermission", "match": "Umb.Section.Settings" }
+      ]
+    },
+    {
+      "type": "workspaceView",
+      "alias": "uTPro.UrlViewer.View.NodeScan.Document",
+      "name": "URL Scan (Document)",
+      "element": "/App_Plugins/url-viewer/node-scan.js",
+      "weight": 5,
+      "meta": {
+        "label": "#utproUrlViewer_nodeScan",
+        "pathname": "url-scan",
+        "icon": "icon-search"
+      },
+      "conditions": [
+        { "alias": "Umb.Condition.WorkspaceAlias", "match": "Umb.Workspace.Document" },
+        { "alias": "Umb.Condition.SectionUserPermission", "match": "Umb.Section.Settings" },
+        { "alias": "uTPro.UrlViewer.Condition.HasPublicUrl" }
+      ]
+    },
+    {
+      "type": "workspaceView",
+      "alias": "uTPro.UrlViewer.View.NodeScan.Media",
+      "name": "URL Scan (Media)",
+      "element": "/App_Plugins/url-viewer/node-scan.js",
+      "weight": 5,
+      "meta": {
+        "label": "#utproUrlViewer_nodeScan",
+        "pathname": "url-scan",
+        "icon": "icon-search"
+      },
+      "conditions": [
+        { "alias": "Umb.Condition.WorkspaceAlias", "match": "Umb.Workspace.Media" },
+        { "alias": "Umb.Condition.SectionUserPermission", "match": "Umb.Section.Settings" },
+        { "alias": "uTPro.UrlViewer.Condition.HasPublicUrl" }
       ]
     },
     {

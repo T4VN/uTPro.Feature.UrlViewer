@@ -20,6 +20,7 @@ namespace uTPro.Feature.UrlViewer.Controllers;
 public class SiteScanApiController(
     IScanReportStore store,
     IServiceScopeFactory scopeFactory,
+    INodeScanService nodeScanService,
     IBackOfficeSecurityAccessor backOfficeSecurityAccessor) : ManagementApiControllerBase
 {
     /// <summary>Reports whether a scan is currently running.</summary>
@@ -68,6 +69,42 @@ public class SiteScanApiController(
         var scanService = scope.ServiceProvider.GetRequiredService<ISiteScanService>();
         var row = await scanService.RescanUrlAsync(request.Url, CurrentUserId(), cancellationToken);
         return Ok(MapResult(row));
+    }
+
+    /// <summary>
+    /// Scans the public URL(s) of a single Content/Media node on demand and returns a live report.
+    /// Nothing is persisted; this is the node-level counterpart to the site-wide scan.
+    /// </summary>
+    [HttpPost("node-scan")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> NodeScan([FromBody] NodeScanRequest request, CancellationToken cancellationToken)
+    {
+        if (request.Key == Guid.Empty)
+        {
+            return BadRequest(new { error = "Node key is required." });
+        }
+
+        var result = await nodeScanService.ScanNodeAsync(
+            request.Key, request.EntityType ?? "document", cancellationToken);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Lightweight check (no fetch) of whether a node has at least one public URL. Used by the
+    /// backoffice condition to decide whether the URL Scan tab should be shown.
+    /// </summary>
+    [HttpGet("node-has-url")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult NodeHasUrl([FromQuery] Guid key, [FromQuery] string? entityType = null)
+    {
+        if (key == Guid.Empty)
+        {
+            return Ok(new { hasUrl = false, found = false });
+        }
+
+        var set = nodeScanService.ResolveUrls(key, entityType ?? "document");
+        return Ok(new { hasUrl = set.Urls.Count > 0, found = set.Found, type = set.Type });
     }
 
     /// <summary>Lists recent scan runs.</summary>

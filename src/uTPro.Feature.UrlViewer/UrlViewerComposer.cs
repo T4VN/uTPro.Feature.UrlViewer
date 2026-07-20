@@ -38,6 +38,9 @@ public class UrlViewerComposer : IComposer
         builder.Services.AddScoped<IUrlCollectorService, UrlCollectorService>();
         builder.Services.AddScoped<ISiteScanService, SiteScanService>();
 
+        // On-demand single-node URL scan, triggered from a Content/Media workspace view.
+        builder.Services.AddScoped<INodeScanService, NodeScanService>();
+
         // Schema migration runs on application start.
         builder.AddNotificationAsyncHandler<UmbracoApplicationStartedNotification, SiteScanMigrationHandler>();
 
