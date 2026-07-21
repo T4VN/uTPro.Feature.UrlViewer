@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Umbraco.Cms.Api.Common.Attributes;
 using Umbraco.Cms.Api.Management.Controllers;
 using Umbraco.Cms.Api.Management.Routing;
 using Umbraco.Cms.Web.Common.Authorization;
@@ -14,7 +15,8 @@ namespace uTPro.Feature.UrlViewer.Controllers;
 /// Every action requires access to the Settings section and is routed under /umbraco.
 /// </summary>
 [VersionedApiBackOfficeRoute("utpro/url-viewer")]
-[ApiExplorerSettings(GroupName = "uTPro URL Viewer")]
+[MapToApi(ConfigureUrlViewerSwaggerGenOptions.ApiName)]
+[ApiExplorerSettings(GroupName = "URL Viewer")]
 [Authorize(Policy = AuthorizationPolicies.SectionAccessSettings)]
 public class UrlViewerApiController(IUrlViewerService urlViewerService) : ManagementApiControllerBase
 {

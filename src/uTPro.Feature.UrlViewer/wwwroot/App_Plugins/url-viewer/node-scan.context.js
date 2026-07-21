@@ -2,7 +2,6 @@ import { UmbControllerBase } from '@umbraco-cms/backoffice/class-api';
 import { UmbContextToken } from '@umbraco-cms/backoffice/context-api';
 import { UmbObjectState } from '@umbraco-cms/backoffice/observable-api';
 import { UMB_AUTH_CONTEXT } from '@umbraco-cms/backoffice/auth';
-import { UMB_NOTIFICATION_CONTEXT } from '@umbraco-cms/backoffice/notification';
 import { UMB_DOCUMENT_WORKSPACE_CONTEXT } from '@umbraco-cms/backoffice/document';
 import { UMB_MEDIA_WORKSPACE_CONTEXT } from '@umbraco-cms/backoffice/media';
 
@@ -16,10 +15,10 @@ const DEFAULT_STATE = { status: 'idle', response: null, hasIssue: false };
 
 /**
  * Workspace context for the URL Scan feature. It is created as soon as a Content/Media editor
- * opens (regardless of which tab is active), so it can scan the node's own URL(s) in the background
- * and — if something looks wrong — raise a notification to draw attention, without the user having
- * to open the tab and click a button. The URL Scan tab view consumes this context to render the
- * result it already produced.
+ * opens (regardless of which tab is active), so it can scan the node's own URL(s) in the background.
+ * The result is exposed as an observable; the Scan tab view renders the detail, and the workspace
+ * footer app shows a short warning line when an issue is found (no intrusive notification popups,
+ * which would pile up when browsing many nodes).
  */
 export class UtproNodeScanContext extends UmbControllerBase {
 
@@ -28,7 +27,6 @@ export class UtproNodeScanContext extends UmbControllerBase {
     state = this.#state.asObservable();
 
     #authContext;
-    #notificationContext;
     #nodeKey = null;
     #entityType = 'document';
     #scannedKey = null;
@@ -38,7 +36,6 @@ export class UtproNodeScanContext extends UmbControllerBase {
         this.provideContext(UTPRO_NODE_SCAN_CONTEXT, this);
 
         this.consumeContext(UMB_AUTH_CONTEXT, (ctx) => { this.#authContext = ctx; this.#maybeScan(); });
-        this.consumeContext(UMB_NOTIFICATION_CONTEXT, (ctx) => { this.#notificationContext = ctx; });
         this.consumeContext(UMB_DOCUMENT_WORKSPACE_CONTEXT, (ctx) => this.#bind(ctx, 'document'));
         this.consumeContext(UMB_MEDIA_WORKSPACE_CONTEXT, (ctx) => this.#bind(ctx, 'media'));
     }
@@ -76,15 +73,6 @@ export class UtproNodeScanContext extends UmbControllerBase {
             const response = res.body;
             const hasIssue = this.#computeIssue(response);
             this.#state.setValue({ status: 'done', response, hasIssue });
-
-            if (hasIssue) {
-                this.#notificationContext?.peek('warning', {
-                    data: {
-                        headline: 'URL Scan',
-                        message: 'A problem was found while scanning this node\'s URL(s). Open the URL Scan tab for details.'
-                    }
-                });
-            }
         } catch (e) {
             console.error('Node URL auto-scan failed', e);
             this.#state.setValue({ status: 'error', response: null, hasIssue: true });

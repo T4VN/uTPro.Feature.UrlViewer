@@ -9,7 +9,7 @@
     <!-- NuGet Package Metadata -->
     <PackageId>uTPro.Feature.UrlViewer</PackageId>
     <Title>uTPro URL Viewer for Umbraco (16, 17, 18)</Title>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
     <Authors>T4VN</Authors>
     <Company>T4VN</Company>
     <Description>Fetch and inspect any URL as Googlebot, Bingbot or a real browser, directly from your Umbraco site. Follows the full redirect chain, shows response headers per hop, renders the HTML source, and analyses the page for spam/hack keywords, hidden CSS, meta tags and common JavaScript issues. Includes cloaking detection (compares what a bot sees versus what Chrome sees) and a VirusTotal link. Great for SEO debugging, diagnosing hacked/cloaked pages and inspecting redirects. Server-side fetch blocks private/local addresses for safety.</Description>

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Umbraco.Cms.Api.Common.Attributes;
 using Umbraco.Cms.Api.Management.Controllers;
 using Umbraco.Cms.Api.Management.Routing;
 using Umbraco.Cms.Core.Security;
@@ -15,7 +16,8 @@ namespace uTPro.Feature.UrlViewer.Controllers;
 /// Routed under /umbraco and gated to the Settings section.
 /// </summary>
 [VersionedApiBackOfficeRoute("utpro/url-scan")]
-[ApiExplorerSettings(GroupName = "uTPro URL Viewer")]
+[MapToApi(ConfigureUrlViewerSwaggerGenOptions.ApiName)]
+[ApiExplorerSettings(GroupName = "Site URL Scan")]
 [Authorize(Policy = AuthorizationPolicies.SectionAccessSettings)]
 public class SiteScanApiController(
     IScanReportStore store,

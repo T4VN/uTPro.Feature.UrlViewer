@@ -18,6 +18,9 @@ public class UrlViewerComposer : IComposer
 {
     public void Compose(IUmbracoBuilder builder)
     {
+        // Register a dedicated Swagger document for this feature (its own dropdown entry).
+        builder.Services.ConfigureOptions<ConfigureUrlViewerSwaggerGenOptions>();
+
         // Single no-redirect client for all fetches: every hop (initial URL, each redirect and the
         // body read) is followed manually so the DNS-based SSRF guard runs on every host. An
         // auto-redirect client would bypass that guard, so it is intentionally not registered.
