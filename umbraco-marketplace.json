@@ -1,0 +1,56 @@
+{
+  "$schema": "https://marketplace.umbraco.com/umbraco-marketplace-schema.json",
+  "Category": "Developer Tools",
+  "Title": "uTPro SEO Audit",
+  "Description": "Full SEO and site audit for Umbraco (16, 17, 18), formerly uTPro URL Viewer. Crawls every Content & Media URL (plus sitemap.xml) and checks for broken links, images and resources, then audits each page: SEO (title, meta description, canonical, H1-H3, noindex/nofollow, lang), Open Graph & Twitter cards, technical SEO (HTTPS, gzip, browser caching, schema.org, viewport), content quality (word count, readability, thin & duplicate content), a static accessibility subset (aria, skip links, heading structure, unlabelled inputs) and estimated carbon emissions with an A-F rating. Get a per-run health score, issues grouped by severity/priority, orphaned-page detection, incremental scans, CSV export and a per-page detail view - all inside the backoffice. Still includes the original fetch-as-Googlebot/Bingbot URL Viewer tool (full redirect chain, response headers, HTML source, cloaking and spam/hack detection, VirusTotal link). Runs as a recurring background job (auto-discovered by uTPro Job Monitor). Server-side and SSRF-safe (blocks private/local addresses).",
+  "AuthorDetails": {
+    "Name": "T4VN",
+    "Url": "https://t4vn.com",
+    "ImageUrl": "https://github.com/t4vn.png",
+    "SyncContributorsFromRepository": true
+  },
+  "LicenseTypes": [
+    "Free"
+  ],
+  "Tags": [
+    "seo",
+    "seo audit",
+    "site audit",
+    "content audit",
+    "crawler",
+    "broken links",
+    "broken link checker",
+    "accessibility",
+    "sitemap",
+    "carbon",
+    "health score",
+    "redirect",
+    "cloaking",
+    "fetch as googlebot",
+    "googlebot",
+    "url viewer",
+    "developer tools"
+  ],
+  "LookingForContributors": true,
+  "PackageType": "Package",
+  "DocumentationUrl": "https://github.com/T4VN/uTPro.Feature.UrlViewer",
+  "IssueTrackerUrl": "https://github.com/T4VN/uTPro.Feature.UrlViewer/issues",
+  "Screenshots": [
+    {
+      "ImageUrl": "https://raw.githubusercontent.com/T4VN/uTPro.Feature.UrlViewer/refs/heads/main/Images/Screenshots/1.0.0/ScanUrl.png",
+      "Caption": "URL Viewer - fetch a URL as any bot/browser and inspect the redirect chain, headers, HTML source and analysis"
+    },
+    {
+      "ImageUrl": "https://raw.githubusercontent.com/T4VN/uTPro.Feature.UrlViewer/refs/heads/main/Images/Screenshots/1.0.0/SiteScan.png",
+      "Caption": "Site URL Scan - scan every Content & Media URL and browse the latest report"
+    },
+    {
+      "ImageUrl": "https://raw.githubusercontent.com/T4VN/uTPro.Feature.UrlViewer/refs/heads/main/Images/Screenshots/1.0.0/Error.png",
+      "Caption": "Error URLs - the standing list of failing URLs, with one-click re-scan (single or all)"
+    },
+    {
+      "ImageUrl": "https://raw.githubusercontent.com/T4VN/uTPro.Feature.UrlViewer/refs/heads/main/Images/Screenshots/1.0.0/uTPro.Feature.UrlViewer.SiteScan.SiteUrlScanJob.png",
+      "Caption": "Auto-discovered by uTPro Job Monitor - the recurring Site URL Scan background job"
+    }
+  ]
+}
