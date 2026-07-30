@@ -91,25 +91,6 @@ No configuration is required for the URL Viewer tool itself. If you need to fetc
 | `AllowInternalHosts` | `false` | Relax the SSRF guard to allow fetching private/local addresses. Only for internal dev sites. |
 | `AllowInvalidCertificates` | `false` | Accept self-signed / invalid TLS certificates. Only for internal dev sites. |
 
-## Building the package
-
-```powershell
-pwsh ./pack.ps1
-```
-
-Wipes `bin`/`obj`, clean `Release` pack into `Build/`, evicts the version from the local NuGet cache.
-
-## Repository layout
-
-```
-uTPro.Feature.UrlViewer.Src/
-├─ src/
-│  ├─ uTPro.Feature.UrlViewer/          # NuGet package
-│  └─ uTPro.Feature.UrlViewer.TestSite/ # demo Umbraco site
-├─ pack.ps1
-└─ uTPro.Feature.UrlViewer.sln
-```
-
 ## License
 
 Free to use (including commercially) under a proprietary [End User License Agreement](LICENSE.txt).
