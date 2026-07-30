@@ -49,13 +49,6 @@ uTPro.Feature.UrlViewer  uTPro.Feature.SEOAudit
 (this package)           (site-wide crawler — optional companion)
 ```
 
-## Install alongside the SEO Audit
-
-If you also install [`uTPro.Feature.SEOAudit`](https://www.nuget.org/packages/uTPro.Feature.SEOAudit),
-its **Site Audit** and **Error URLs** dashboards appear in the same **SEO Audit** section, and a per-node
-**SEO Audit** tab is added to every Content/Media editor. Each package works independently — install
-only what you need.
-
 ## Security
 
 All API endpoints are backoffice-secured under `/umbraco/management/api/v1/utpro/...` and require
