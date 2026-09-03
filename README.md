@@ -12,55 +12,80 @@ Supports **Umbraco 16, 17 and 18**.
 
 ![uTPro URL Viewer for Umbraco](https://raw.githubusercontent.com/T4VN/uTPro.Feature.UrlViewer/refs/heads/main/Images/Screenshots/3.0.0/ScanUrl.png)
 
----
+## What it does
 
-## Features
+Installing this package adds a **URL Viewer** section to the backoffice navigation. Users assigned to the section get a single **URL Viewer** tab.
 
-- Full redirect chain with status codes and raw headers
-- HTML source viewer with line numbers and copy-to-clipboard
-- Composite SEO score (0–100) with per-category sub-scores
-- On-page SEO, social tags, technical SEO, content metrics
-- Accessibility checks, carbon estimate (A–F rating)
-- Cloaking detection (bot vs Chrome comparison)
-- VirusTotal link for domain check
-- REST API for CI pipelines
+### URL Viewer tab
 
----
+Enter any URL, pick the scheme (HTTP/HTTPS), user agent and referrer, then fetch. You get:
 
-## Quick Start
+- **Full redirect chain** — every hop with status code and raw response headers.
+- **HTML source viewer** — line numbers, word-wrap toggle, copy-to-clipboard, spam-word highlighting.
+- **Composite SEO score (0–100)** — Lighthouse-style checklist with per-category sub-scores (SEO / Technical / Content / Accessibility) and individual check pass/fail + remediation advice.
+- **On-page SEO analysis** — title, meta description, canonical, H1/H2/H3 list, `noindex` / `nofollow`, `lang`.
+- **Social tags** — Open Graph and Twitter Card, social-profile links, pixel detection (Facebook, Twitter, LinkedIn, Google Analytics).
+- **Technical SEO** — charset, gzip/br compression, browser caching, HTTPS, schema.org markup, viewport, favicon.
+- **Content metrics** — word and paragraph count, Flesch readability, keyword density, thin-content flag.
+- **Accessibility subset** — aria-label / aria-describedby counts, skip-to-content link, heading structure, inputs missing a label.
+- **Carbon estimate** — CO₂e per page view with an A–F rating.
+- **Spam / hidden-CSS / JavaScript analysis** — common hack injection patterns, hidden elements, `eval` / `document.write` / base64 obfuscation and more.
+- **Cloaking detection** — compares what the bot sees versus what Chrome sees (title, status code, content-size difference).
+- **VirusTotal link** for the fetched domain.
+
+### REST API
+
+Every fetch is also available as an authenticated JSON API (`POST /umbraco/management/api/v1/utpro/url-viewer/fetch`) — useful for CI pipelines or external tooling. The response includes the full `analysis.audit` object and the `seoScore`.
+
+## Architecture
+
+This package is built on the framework-agnostic [**T4VN.Seo.Core**](https://www.nuget.org/packages/T4VN.Seo.Core) engine, which provides the fetch pipeline, all analysis and `SeoScorer` — the single source of truth for the SEO score. Both this package and the companion site crawler ([`uTPro.Feature.SEOAudit`](https://www.nuget.org/packages/uTPro.Feature.SEOAudit)) share the same engine, so scores are identical everywhere.
+
+```
+T4VN.Seo.Core  (engine, no Umbraco)
+      ▲                  ▲
+      │                  │
+uTPro.Feature.UrlViewer  uTPro.Feature.SEOAudit
+(this package)           (site-wide crawler — optional companion)
+```
+
+## Security
+
+All API endpoints are backoffice-secured under `/umbraco/management/api/v1/utpro/...` and require
+Settings-section access. Server-side fetches run behind an **SSRF guard** that blocks private/local
+addresses (RFC-1918, localhost, `.local`, CGNAT, link-local, IPv6 ULA/loopback) and re-checks on
+every redirect hop.
+
+## Installation
 
 ```bash
 dotnet add package uTPro.Feature.UrlViewer
 ```
 
-| Umbraco | .NET | Target |
-|---|---|---|
-| 16 | .NET 9 | `net9.0` |
-| 17 & 18 | .NET 10 | `net10.0` |
-
----
-
 ## Configuration
 
-No configuration required. For internal/dev hosts:
+No configuration is required for the URL Viewer tool itself. If you need to fetch internal/dev hosts:
+
+```json
+{
+  "uTPro": {
+    "Feature": {
+      "UrlViewer": {
+        "AllowInternalHosts": false,
+        "AllowInvalidCertificates": false
+      }
+    }
+  }
+}
+```
 
 | Key | Default | Description |
 |-----|---------|-------------|
-| `AllowInternalHosts` | `false` | Relax SSRF guard for dev sites |
-| `AllowInvalidCertificates` | `false` | Accept self-signed TLS |
-
----
-
-## 📖 Full Documentation
-
-**[docs.utpro.dev/uTPro.Feature.UrlViewer](https://docs.utpro.dev/uTPro.Feature.UrlViewer/)**
-
----
+| `AllowInternalHosts` | `false` | Relax the SSRF guard to allow fetching private/local addresses. Only for internal dev sites. |
+| `AllowInvalidCertificates` | `false` | Accept self-signed / invalid TLS certificates. Only for internal dev sites. |
 
 ## License
 
 Free to use (including commercially) under a proprietary [End User License Agreement](LICENSE.txt).
-
----
-
-> 📦 [NuGet](https://www.nuget.org/packages/uTPro.Feature.UrlViewer) · [GitHub](https://github.com/T4VN/uTPro.Feature.UrlViewer) · [Umbraco Marketplace](https://marketplace.umbraco.com/package/utpro.feature.urlviewer)
+Distributed as a compiled NuGet package — source is not published; modification, reverse-engineering
+and redistribution are not permitted.
