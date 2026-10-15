@@ -1,5 +1,7 @@
 # uTPro URL Viewer for Umbraco
 
+**Documentation:** <https://docs.utpro.dev/uTPro.Feature.UrlViewer/>
+
 Fetch any URL from inside the Umbraco backoffice and see **exactly** what a search engine or browser sees — redirect chain, response headers, HTML source, and a full static analysis including a **composite SEO score**.
 
 Supports **Umbraco 16, 17 and 18**.
@@ -31,11 +33,13 @@ Enter any URL, pick the scheme (HTTP/HTTPS), user agent and referrer, then fetch
 - **Carbon estimate** — CO₂e per page view with an A–F rating.
 - **Spam / hidden-CSS / JavaScript analysis** — common hack injection patterns, hidden elements, `eval` / `document.write` / base64 obfuscation and more.
 - **Cloaking detection** — compares what the bot sees versus what Chrome sees (title, status code, content-size difference).
+- **Mobile ⇄ Desktop compare** — one click fetches the URL as both the smartphone and the desktop Googlebot and highlights every differing field (title, meta description, word count, links, images, `noindex`, cloaking, SEO and AI-readiness scores), so thin or inconsistent mobile responses stand out immediately.
+- **Fetch history** — recent fetches are listed with status, score and elapsed time; re-fill the form from any history row with one click, or clear the list anytime. History is capped at 200 rows and HTML bodies are never stored.
 - **VirusTotal link** for the fetched domain.
 
 ### REST API
 
-Every fetch is also available as an authenticated JSON API (`POST /umbraco/management/api/v1/utpro/url-viewer/fetch`) — useful for CI pipelines or external tooling. The response includes the full `analysis.audit` object and the `seoScore`.
+Every fetch is also available as an authenticated JSON API (`POST /umbraco/management/api/v1/utpro/url-viewer/fetch`) — useful for CI pipelines or external tooling. The response includes the full `analysis.audit` object and the `seoScore`. Two companion endpoints: `POST …/compare` (fetch as both Googlebot UAs and return both summaries side by side) and `GET/DELETE …/history` (read or clear the fetch history).
 
 ## Architecture
 

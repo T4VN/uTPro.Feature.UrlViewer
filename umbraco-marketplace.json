@@ -13,7 +13,7 @@
   "Tags": ["url viewer","fetch as googlebot","googlebot","bingbot","redirect","redirect chain","headers","cloaking","seo","seo score","on-page seo","developer tools","api","ssrf"],
   "LookingForContributors": true,
   "PackageType": "Package",
-  "DocumentationUrl": "https://github.com/T4VN/uTPro.Feature.UrlViewer",
+  "DocumentationUrl": "https://docs.utpro.dev/uTPro.Feature.UrlViewer/",
   "IssueTrackerUrl": "https://github.com/T4VN/uTPro.Feature.UrlViewer/issues",
   "Screenshots": [
     { "ImageUrl": "https://raw.githubusercontent.com/T4VN/uTPro.Feature.UrlViewer/refs/heads/main/Images/Screenshots/3.0.0/ScanUrl.png", "Caption": "URL Viewer - fetch a URL as any bot/browser and inspect the redirect chain, headers, HTML source and full SEO analysis" }
